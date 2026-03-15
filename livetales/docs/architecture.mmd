@@ -1,0 +1,87 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#A855F7', 'primaryTextColor': '#fff', 'primaryBorderColor': '#7c3aed', 'lineColor': '#6b7280', 'secondaryColor': '#FF9A3D', 'tertiaryColor': '#38BDF8', 'background': '#ffffff', 'mainBkg': '#f3e8ff', 'nodeBorder': '#7c3aed'}}}%%
+
+flowchart TB
+    subgraph Browser["🖥️ Frontend — React + TypeScript"]
+        direction TB
+        Canvas["🎨 Drawing Canvas<br/><i>HTML5 Canvas, colors, brushes</i>"]
+        Mic["🎤 Microphone<br/><i>PCM audio @ 16kHz</i>"]
+        Speaker["🔊 Audio Playback<br/><i>Web Audio API @ 24kHz</i>"]
+        Story["📖 Storybook Viewer<br/><i>6-page illustrated story</i>"]
+        Video["🎬 Video Player<br/><i>Animated storybook</i>"]
+    end
+
+    subgraph CloudRun["☁️ Google Cloud Run — FastAPI Backend"]
+        direction TB
+        WS["🔌 WebSocket Server<br/><i>/ws/story/{session_id}</i>"]
+        TransBuf["💬 Transcription Buffer<br/><i>Tali: ... Child: ...</i>"]
+
+        subgraph LiveVoice["🗣️ Real-Time Voice Pipeline"]
+            ADK["Google ADK Runner<br/><i>LiveRequestQueue + RunConfig</i>"]
+            Tali["🧚 Tali Agent<br/><i>Personality + System Prompt</i>"]
+        end
+
+        subgraph StoryPipeline["📚 Story Generation Pipeline"]
+            StoryGen["Story Generator<br/><i>Canvas + Context → JSON</i>"]
+            IllustGen["Illustration Generator<br/><i>Prompt → Watercolor Art</i>"]
+        end
+
+        subgraph VideoPipeline["🎬 Video Pipeline (on demand)"]
+            TTSGen["Full Narration<br/><i>All pages → Single TTS</i>"]
+            VeoGen["Per-Page Video<br/><i>Illustration → 5s Animation</i>"]
+        end
+    end
+
+    subgraph VertexAI["🤖 Google Cloud — Vertex AI"]
+        direction TB
+        GeminiLive["Gemini 2.0 Flash Live<br/><i>Bidi-streaming native audio</i>"]
+        Gemini25["Gemini 2.5 Flash<br/><i>Multimodal vision + text</i>"]
+        Imagen["Imagen 3.0<br/><i>Text-to-image generation</i>"]
+        TTS["Gemini 2.5 Flash TTS<br/><i>Text-to-speech</i>"]
+        Veo["Veo 2.0<br/><i>Image-to-video</i>"]
+    end
+
+    subgraph GCS["📦 Google Cloud Storage"]
+        Bucket["GCS Bucket<br/><i>Illustrations + Videos</i>"]
+    end
+
+    %% Browser to Backend
+    Canvas -- "JPEG snapshots<br/>(every 5s)" --> WS
+    Mic -- "Base64 audio<br/>(real-time)" --> WS
+    WS -- "Audio response" --> Speaker
+    WS -- "Story + illustrations" --> Story
+    WS -- "Narration + video" --> Video
+
+    %% Voice pipeline
+    WS -- "audio" --> ADK
+    ADK --> Tali
+    Tali -- "transcriptions" --> TransBuf
+
+    %% Story pipeline (triggered by "generate_story" message)
+    WS -- "generate_story" --> StoryGen
+    TransBuf -- "conversation context" --> StoryGen
+    StoryGen --> IllustGen
+
+    %% Video pipeline (triggered by "generate_video" message, runs in parallel)
+    WS -- "generate_video" --> TTSGen
+    WS -- "generate_video" --> VeoGen
+
+    %% Backend to Vertex AI
+    Tali <-- "Bidi audio stream" --> GeminiLive
+    StoryGen -- "Image + text" --> Gemini25
+    IllustGen -- "Illustration prompt" --> Imagen
+    TTSGen -- "Full story text" --> TTS
+    VeoGen -- "Starting frame" --> Veo
+
+    %% GCS
+    VeoGen <--> Bucket
+    Veo <--> Bucket
+
+    %% Styling
+    style Browser fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px
+    style CloudRun fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
+    style VertexAI fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    style GCS fill:#d1fae5,stroke:#10b981,stroke-width:2px
+    style LiveVoice fill:#fce7f3,stroke:#ec4899,stroke-width:1px
+    style StoryPipeline fill:#fff7ed,stroke:#f97316,stroke-width:1px
+    style VideoPipeline fill:#e0f2fe,stroke:#0284c7,stroke-width:1px
+    style TransBuf fill:#fef9c3,stroke:#ca8a04,stroke-width:1px

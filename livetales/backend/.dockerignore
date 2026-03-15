@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.example
+.git/
+.gitignore
+.pytest_cache/
+test_voice.py
+*.egg-info/
+dist/
+build/
