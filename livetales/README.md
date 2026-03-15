@@ -1,6 +1,6 @@
 # LiveTales
 
-**Interactive AI-powered storytelling for children ages 3–8.**
+**Interactive AI-powered storytelling for children ages 3–13.**
 
 Kids draw on a canvas, chat with Tali (an AI friend powered by Gemini Live API), and together create fully illustrated, narrated storybooks in real-time.
 
