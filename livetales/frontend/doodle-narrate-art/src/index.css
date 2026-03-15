@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 100% 98%;
+    --foreground: 244 45% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 244 45% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 244 45% 20%;
+
+    --primary: 263 84% 57%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 260 20% 95%;
+    --muted-foreground: 244 20% 46%;
+
+    --accent: 199 89% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 260 20% 90%;
+    --input: 260 20% 90%;
+    --ring: 263 84% 57%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 263 84% 57%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 20% 95%;
+    --sidebar-accent-foreground: 244 45% 20%;
+    --sidebar-border: 260 20% 90%;
+    --sidebar-ring: 263 84% 57%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(263, 84%, 57%), hsl(25, 95%, 53%));
+    --gradient-hero: linear-gradient(180deg, hsl(36, 100%, 98%) 0%, hsl(260, 40%, 96%) 100%);
+    --gradient-magic: linear-gradient(135deg, hsl(263, 84%, 57%), hsl(199, 89%, 60%));
+    --shadow-soft: 0 4px 24px -4px hsl(263 84% 57% / 0.12);
+    --shadow-card: 0 8px 32px -8px hsl(263 84% 57% / 0.1);
+    --shadow-glow: 0 0 20px hsl(263 84% 57% / 0.3);
+  }
+
+  .dark {
+    --background: 244 45% 8%;
+    --foreground: 0 0% 95%;
+    --card: 244 30% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 244 30% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 263 84% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 95% 58%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 244 20% 18%;
+    --muted-foreground: 260 10% 65%;
+    --accent: 199 89% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 244 20% 20%;
+    --input: 244 20% 20%;
+    --ring: 263 84% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', sans-serif;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: 'Nunito', sans-serif;
+  }
+  .font-body {
+    font-family: 'Inter', sans-serif;
+  }
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  .gradient-magic {
+    background: var(--gradient-magic);
+  }
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+/* Floating animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes pulse-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 5s ease-in-out infinite; }
+.animate-sparkle { animation: sparkle 2s ease-in-out infinite; }
+.animate-pulse-bar { animation: pulse-bar 1.2s ease-in-out infinite; }
+.animate-shimmer {
+  background: linear-gradient(90deg, hsl(260, 20%, 95%) 25%, hsl(260, 30%, 90%) 50%, hsl(260, 20%, 95%) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
